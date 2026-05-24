@@ -75,12 +75,6 @@ agente-estudos-n8n/
 
 ---
 
-## Demonstração
-
-Bot disponível em: [@assistenteestudosbot](https://t.me/assistenteestudosbot)
-
----
-
 ## Licença
 
 MIT — livre para usar, modificar e distribuir.

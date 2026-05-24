@@ -8,7 +8,6 @@ Registro completo do processo de criação do agente do zero, incluindo decisõe
 
 O agente foi construído ao vivo durante o minicurso da OpalaTech. O objetivo era demonstrar como qualquer desenvolvedor pode criar um agente de IA funcional usando ferramentas gratuitas, sem necessidade de código.
 
-**Tempo total de construção:** aproximadamente 2 horas  
 **Custo:** zero
 
 ---
@@ -31,7 +30,7 @@ O Telegram precisa enviar mensagens via webhook para uma URL pública. No Docker
 Processo via @BotFather:
 1. Comando `/newbot`
 2. Nome definido: `Assistente de Estudos em Programação`
-3. Username definido: `assistenteestudosbot` (primeira tentativa `assistente_estudos_bot` estava ocupada)
+3. Username definido: `assistenteestudosbot`
 4. Token gerado e guardado
 
 **Configurações adicionais no BotFather:**
@@ -48,14 +47,12 @@ Processo via @BotFather:
 2. Novo workflow criado com o nome `Agente de Estudos`
 3. Credencial do Telegram criada com o token do BotFather
 4. Nó **Telegram Trigger** adicionado com opção **On message**
-5. Primeiro teste: mensagem "olá" enviada no Telegram → n8n capturou corretamente
+5. Primeiro teste: mensagem enviada no Telegram → n8n capturou corretamente
 
 **Dados recebidos no primeiro trigger:**
-```
-message.text → "olá"
-message.chat.id → ID do chat (usado para enviar resposta de volta)
-message.from.first_name → nome do usuário
-```
+- `message.text` → texto enviado pelo usuário
+- `message.chat.id` → ID do chat (usado para enviar resposta de volta)
+- `message.from.first_name` → nome do usuário
 
 ---
 
@@ -67,7 +64,7 @@ A primeira implementação usou um nó **HTTP Request** chamando diretamente a A
 POST https://api.groq.com/openai/v1/chat/completions
 ```
 
-**Problema encontrado:** modelo `llama3-8b-8192` estava descontinuado.  
+**Problema encontrado:** modelo `llama3-8b-8192` estava descontinuado.
 **Solução:** trocar para `llama-3.3-70b-versatile`.
 
 O HTTP Request funcionou, mas foi substituído pelo nó AI Agent nativo do n8n por uma razão didática: o AI Agent mostra cada etapa da execução separadamente, tornando o fluxo mais transparente para os alunos do minicurso.
@@ -137,16 +134,16 @@ Adicionados:
 
 **Problema recorrente:** erro `Bad request - can't parse entities` ao enviar mensagens.
 
-**Causa:** o agente gerava texto com caracteres especiais (asteriscos, backticks, aspas, pontos em contextos específicos) que o Telegram interpreta como Markdown malformado.
+**Causa:** o agente gerava texto com caracteres especiais que o Telegram interpreta como Markdown malformado.
 
 **Tentativas e resultados:**
 
 | Tentativa | Resultado |
 |---|---|
 | Parse Mode: MarkdownV2 | Falhou — exige escape de `.` `!` `(` `)` e outros caracteres comuns |
-| Parse Mode: Markdown Legacy | Falhou — caracteres de código Python quebravam o parse |
+| Parse Mode: Markdown Legacy | Falhou — caracteres de código quebravam o parse |
 | Parse Mode: HTML | Funcionou — mais tolerante a texto livre |
-| Sem Parse Mode (None) + regra no prompt | Falhou — caracteres especiais ainda quebravam |
+| Sem Parse Mode + regra no prompt | Falhou — caracteres especiais ainda quebravam |
 
 **Solução final:** Parse Mode **HTML** no nó Send a text message, combinado com regras no system prompt:
 - Nunca usar formatação Markdown

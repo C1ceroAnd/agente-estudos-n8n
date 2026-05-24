@@ -16,10 +16,10 @@
       ],
       "id": "185060e0-f00b-4f79-b5c7-bebec514927c",
       "name": "Telegram Trigger",
-      "webhookId": "8c5071b6-a17e-4e61-acbb-e05bd2f6ff4b",
+      "webhookId": "SEU_WEBHOOK_ID",
       "credentials": {
         "telegramApi": {
-          "id": "R8mSWnpZLJq4dmzX",
+          "id": "SEU_ID_CREDENCIAL",
           "name": "Telegram account"
         }
       }
@@ -41,10 +41,10 @@
       ],
       "id": "820fb1ba-df9d-433a-a132-f5f699ca4057",
       "name": "Send a text message",
-      "webhookId": "cc288b19-a007-4054-b438-4bd8a5029878",
+      "webhookId": "SEU_WEBHOOK_ID",
       "credentials": {
         "telegramApi": {
-          "id": "R8mSWnpZLJq4dmzX",
+          "id": "SEU_ID_CREDENCIAL",
           "name": "Telegram account"
         }
       }
@@ -81,7 +81,7 @@
       "name": "Groq Chat Model",
       "credentials": {
         "groqApi": {
-          "id": "FjMITS2u6mDo6S6w",
+          "id": "SEU_ID_CREDENCIAL",
           "name": "Groq account"
         }
       }
@@ -153,11 +153,11 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "b4e12f11-188a-45fa-99a7-e8326c3ddafe",
+  "versionId": "SEU_VERSION_ID",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "1974e62c8ffbc0704bfffe34387b05b4aeae9a97b1f4ba83967df0f14dd34280"
+    "instanceId": "SUA_INSTANCIA_N8N"
   },
-  "id": "iXYea3VreubL5HdX",
+  "id": "SEU_WORKFLOW_ID",
   "tags": []
 }
