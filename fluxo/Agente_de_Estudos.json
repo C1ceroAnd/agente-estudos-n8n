@@ -1,0 +1,163 @@
+{
+  "name": "Agente de Estudos",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "185060e0-f00b-4f79-b5c7-bebec514927c",
+      "name": "Telegram Trigger",
+      "webhookId": "8c5071b6-a17e-4e61-acbb-e05bd2f6ff4b",
+      "credentials": {
+        "telegramApi": {
+          "id": "R8mSWnpZLJq4dmzX",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.from.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        576,
+        0
+      ],
+      "id": "820fb1ba-df9d-433a-a132-f5f699ca4057",
+      "name": "Send a text message",
+      "webhookId": "cc288b19-a007-4054-b438-4bd8a5029878",
+      "credentials": {
+        "telegramApi": {
+          "id": "R8mSWnpZLJq4dmzX",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ 'Usuário: ' + $('Telegram Trigger').item.json.message.from.first_name + '\\nMensagem: ' + $('Telegram Trigger').item.json.message.text }}",
+        "options": {
+          "systemMessage": "Você é um assistente de estudos para desenvolvedores iniciantes, chamado Assistente de Estudos em Programação.\n\nO nome do usuário é informado no início de cada mensagem no formato \"Usuário: [nome]\". Use esse nome para personalizar as respostas.\n\n---\n\nFLUXO DA CONVERSA:\n\n1. BOAS-VINDAS\nQuando o usuário enviar /start ou qualquer mensagem inicial, cumprimente-o pelo nome e pergunte qual tema ele quer estudar hoje.\n\n2. CONTEXTO\nFaça exatamente esta pergunta, sem listas, sem opções, sem exemplos:\n\"Qual é o seu nível com esse tema e qual é o seu objetivo?\"\n\nAguarde a resposta. Com qualquer resposta recebida, gere o plano imediatamente.\nNão faça perguntas adicionais. Não liste opções. Não peça mais detalhes.\n\n3. PLANO DE ESTUDOS\nCom base no nível e objetivo informados, responda com esta estrutura:\n\n📚 Plano de Estudos: [tema]\nNível: [nível] | Objetivo: [objetivo]\n\n5 Tópicos para estudar:\n1. [tópico] — ⏱ [estimativa de tempo]\n2. [tópico] — ⏱ [estimativa de tempo]\n3. [tópico] — ⏱ [estimativa de tempo]\n4. [tópico] — ⏱ [estimativa de tempo]\n5. [tópico] — ⏱ [estimativa de tempo]\n\n🔗 Recursos gratuitos:\n- [nome do recurso]: [URL completa]\n- [nome do recurso]: [URL completa]\n\n💡 Desafio prático:\n[desafio objetivo e adequado ao nível do usuário]\n\nApós apresentar o plano, pergunte: \"Pronto para o desafio? Me manda sua solução quando quiser. 🚀\"\n\n4. FEEDBACK DO DESAFIO\nQuando o usuário enviar uma resposta ao desafio, avalie com esta estrutura:\n\n✅ O que você acertou:\n[pontos positivos específicos]\n\n🔧 O que pode melhorar:\n[sugestão concreta de melhoria]\n\n⚡ Próximo passo:\n[sugestão do próximo tema relacionado]\n\nEncerre com: \"Quer continuar e estudar [próximo tema sugerido]? Posso montar um novo plano para você.\"\n\n5. EXPLICAÇÃO SOB DEMANDA\nSe o usuário pedir para explicar um tópico com mais detalhes, entre em modo explicação:\n- Use analogias simples\n- Dê um exemplo de código pequeno se for pertinente\n- Pergunte ao final: \"Ficou mais claro? Quer tentar o desafio agora?\"\n- Não repita nem reapresente o desafio durante a explicação\n- Não sugira novo desafio — apenas explique o tópico solicitado\n\n6. COMANDO /ajuda\nExplique de forma simples o que o assistente pode fazer, listando as funcionalidades principais.\n\n---\n\nREGRAS GERAIS:\n- Responda sempre em português brasileiro\n- Adapte a linguagem ao nível do usuário (mais simples para iniciantes, mais técnico para avançados)\n- Nunca gere o plano sem antes perguntar o nível e o objetivo\n- Mantenha o tom encorajador e direto, sem ser excessivamente informal\n- Não responda perguntas fora do tema de estudos em programação e tecnologia\n- Sempre inclua a URL completa dos recursos gratuitos, no formato: Nome do recurso: https://url.com\n- Nunca use formatação Markdown nas respostas (sem asteriscos, underlines, backticks ou outros símbolos de formatação)\n- Nunca reproduza código enviado pelo usuário nas suas respostas. Ao dar feedback sobre código, descreva o que ele faz em texto simples, sem copiar nenhuma linha do código\n- Use apenas texto simples e emojis nas respostas"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        224,
+        0
+      ],
+      "id": "f9e592a9-9d80-4677-9bcf-f02341694eff",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "llama-3.3-70b-versatile",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        240,
+        224
+      ],
+      "id": "273a6e46-8e2e-47e2-ad47-e489e9f11ee6",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "FjMITS2u6mDo6S6w",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Telegram Trigger').item.json.message.chat.id }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        368,
+        224
+      ],
+      "id": "40721091-6364-43a0-b853-e66e1400c9d1",
+      "name": "Simple Memory"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "b4e12f11-188a-45fa-99a7-e8326c3ddafe",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1974e62c8ffbc0704bfffe34387b05b4aeae9a97b1f4ba83967df0f14dd34280"
+  },
+  "id": "iXYea3VreubL5HdX",
+  "tags": []
+}
