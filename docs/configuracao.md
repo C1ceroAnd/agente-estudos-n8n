@@ -25,7 +25,6 @@ Após criar o bot, acesse **Edit Bot** para configurar:
 Comandos sugeridos:
 ```
 start - Iniciar o assistente
-ajuda - Ver o que o assistente pode fazer
 ```
 
 ---

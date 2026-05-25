@@ -37,7 +37,7 @@ Processo via @BotFather:
 - Foto de perfil adicionada via **Edit Botpic**
 - Descrição configurada via **Edit Description**
 - Texto "Sobre" configurado via **Edit About**
-- Comandos configurados via **Edit Commands**: `start` e `ajuda`
+- Comandos configurados via **Edit Commands**: `start`
 
 ---
 
@@ -54,24 +54,10 @@ Processo via @BotFather:
 - `message.chat.id` → ID do chat (usado para enviar resposta de volta)
 - `message.from.first_name` → nome do usuário
 
----
-
-## Etapa 3 — Primeira abordagem: HTTP Request
-
-A primeira implementação usou um nó **HTTP Request** chamando diretamente a API da Groq:
-
-```
-POST https://api.groq.com/openai/v1/chat/completions
-```
-
-**Problema encontrado:** modelo `llama3-8b-8192` estava descontinuado.
-**Solução:** trocar para `llama-3.3-70b-versatile`.
-
-O HTTP Request funcionou, mas foi substituído pelo nó AI Agent nativo do n8n por uma razão didática: o AI Agent mostra cada etapa da execução separadamente, tornando o fluxo mais transparente para os alunos do minicurso.
 
 ---
 
-## Etapa 4 — Migrar para o AI Agent nativo
+## Etapa 3 — AI Agent nativo
 
 O n8n tem um nó **AI Agent** que integra nativamente com modelos de linguagem e memória. A estrutura ficou:
 
@@ -102,7 +88,7 @@ O campo Source for Prompt também esperava o Chat Trigger nativo.
 
 ---
 
-## Etapa 5 — Construção do System Prompt
+## Etapa 4 — Construção do System Prompt
 
 O system prompt foi construído iterativamente, resolvendo problemas à medida que apareciam.
 
@@ -130,7 +116,7 @@ Adicionados:
 
 ---
 
-## Etapa 6 — Problema de formatação no Telegram
+## Etapa 5 — Problema de formatação no Telegram
 
 **Problema recorrente:** erro `Bad request - can't parse entities` ao enviar mensagens.
 
@@ -151,12 +137,12 @@ Adicionados:
 
 ---
 
-## Etapa 7 — Configurações finais no Telegram
+## Etapa 6 — Configurações finais no Telegram
 
 Após o agente funcionar corretamente:
 - Rodapé "This message was sent automatically with n8n" removido (opção **Append n8n Attribution** desativada)
 - Nome do usuário personalizado via `first_name` do Telegram
-- Comandos `/start` e `/ajuda` testados e funcionando
+- Comando `/start` testado e funcionando
 
 ---
 
@@ -179,13 +165,3 @@ Send a text message (Telegram)
   - Parse Mode: HTML
   - Append Attribution: desativado
 ```
-
----
-
-## Lições aprendidas
-
-1. **O AI Agent nativo do n8n é melhor que HTTP Request para fins didáticos** — as execuções ficam visíveis e rastreáveis
-2. **Simple Memory precisa de session key manual quando o trigger não é o Chat Trigger nativo**
-3. **MarkdownV2 é impraticável com texto gerado por LLM** — HTML é mais tolerante
-4. **System prompts precisam de instrução explícita sobre o que não fazer**, não apenas o que fazer
-5. **n8n Cloud elimina a complexidade de infraestrutura** — essencial para demonstrações ao vivo
